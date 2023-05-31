@@ -15,7 +15,7 @@ function Register() {
             className="register__input register__input_type_name"
             name="name"
             id="input-name"
-            required="true"
+            required
           />
           <span className="register__form_text">E-mail</span>
           <input
@@ -23,7 +23,7 @@ function Register() {
             name="email"
             id="input-email"
             type="email"
-            required="true"
+            required
           />
           <span className="register__form_text">Пароль</span>
           <input
@@ -31,7 +31,7 @@ function Register() {
             name="password"
             id="input-password"
             type="password"
-            required="true"
+            required
           />
           <button className="register__button" type="submit">
             Зарегистрироваться

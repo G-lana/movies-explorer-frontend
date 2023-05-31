@@ -59,6 +59,9 @@
 .register__button:hover {
     opacity: .6;
 }
+.register__button:focus {
+    opacity: 1;
+}
 
 .register__signin {
     margin-top: 16px;
@@ -88,6 +91,10 @@
 
 .register__signin-link:hover {
     opacity: .6;
+}
+
+.register__signin-link:focus {
+    opacity: 1;
 }
 
 @media screen and (max-width: 568px) {

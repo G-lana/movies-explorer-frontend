@@ -158,8 +158,29 @@
     }
 }
 
+@media screen and (max-width: 748px) {
+    .techs__item {
+        width: 80px;
+    }
+}
+
+@media screen and (max-width: 680px) {
+    .techs__item {
+        width: 68px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .techs__item {
+        width: 58px;
+        height: 48px;
+    }
+}
+
 @media screen and (max-width: 568px) {
     .techs__item {
+        width: 84px;
+        height: 57px;
         margin: 0 0 10px;
     }
 }
