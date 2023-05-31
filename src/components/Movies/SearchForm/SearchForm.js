@@ -1,6 +1,6 @@
 import searchIcon from '../../../images/search_icon.svg';
 
-function SearchForm(isChecked) {
+function SearchForm({ isChecked, turnOnCheckBox }) {
   const checkBoxClassName = `checkbox__input checkbox__input_before ${
     isChecked ? 'checkbox__input_type_active' : ''
   }`;
@@ -18,7 +18,12 @@ function SearchForm(isChecked) {
         </button>
       </form>
       <div className="checkbox">
-        <input className={checkBoxClassName} type="checkbox" id="checkbox" />
+        <input
+          className={checkBoxClassName}
+          onClick={turnOnCheckBox}
+          type="checkbox"
+          id="checkbox"
+        />
         <label className="checkbox__label" for="checkbox">
           Короткометражки
         </label>

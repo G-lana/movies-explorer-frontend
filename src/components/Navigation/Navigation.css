@@ -39,7 +39,7 @@
 }
 
 .popup__close {
-  background-image: url(../../images/close.png);
+  background-image: url(../../images/Close.svg);
   background-color: transparent;
   border: none;
   width: 32px;

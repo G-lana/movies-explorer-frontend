@@ -61,6 +61,7 @@
   appearance: none;
   margin-right: 12px;
   transition: .6s;
+  outline: none;
 }
 
 .checkbox__input:hover {
@@ -81,6 +82,7 @@
 
 .checkbox__input_type_active {
   background-image: url(../../../images/checkbox_on.svg);
+  z-index: 1;
 }
 
 .checkbox__label {

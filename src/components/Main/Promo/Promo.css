@@ -1,14 +1,14 @@
 .promo__container {
     background-color: #F3C1F8;
-}
-
-.promo {
-    background-color: #F3C1F8;
     display: flex;
     justify-content: center;
     align-items: center;
     max-width: 1280px;
     margin: auto;
+}
+
+.promo {
+    background-color: #F3C1F8;
 }
 
 .promo__image {

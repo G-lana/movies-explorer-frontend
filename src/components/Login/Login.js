@@ -16,6 +16,7 @@ function Login() {
             name="email"
             id="input-email"
             type="email"
+            required="true"
           />
           <span className="login__form_text">Пароль</span>
           <input
@@ -23,6 +24,7 @@ function Login() {
             name="password"
             id="input-password"
             type="password"
+            required="true"
           />
           <button className="login__button" type="submit">
             Войти

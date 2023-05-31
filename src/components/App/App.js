@@ -21,6 +21,7 @@ function App() {
     location.pathname === '/saved-movies';
 
   const [isPopupOpen, setIsPopupOpen] = React.useState(false);
+  const [isCheckBoxCheked, setIsCheckBoxChecked] = React.useState(false);
 
   const openPopup = () => {
     setIsPopupOpen(true);
@@ -29,12 +30,25 @@ function App() {
   const closePopup = () => {
     setIsPopupOpen(false);
   };
+
+  const handleOnCheckBox = () => {
+    setIsCheckBoxChecked(true);
+  };
+
   return (
     <div className="page">
       <Header openPopup={openPopup} />
       <Routes>
         <Route path="/" element={<Main />} />
-        <Route path="/movies" element={<Movies />} />
+        <Route
+          path="/movies"
+          element={
+            <Movies
+              isChecked={isCheckBoxCheked}
+              turnOnCheckBox={handleOnCheckBox}
+            />
+          }
+        />
         <Route path="/saved-movies" element={<SavedMovies />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/signin" element={<Login />} />

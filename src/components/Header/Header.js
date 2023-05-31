@@ -42,7 +42,7 @@ function Header({ openPopup }) {
           <input
             type="image"
             src={menu}
-            class="header__menu_burger"
+            className="burger"
             alt="menu"
             onClick={openPopup}
           />
@@ -63,8 +63,9 @@ function Header({ openPopup }) {
               to="/profile"
               className="header__menu_item header__menu_item_type_profile"
             >
-              <button class="header__button">
-                <img src={profile} class="button__img" alt="profile" /> Аккаунт
+              <button className="menu-button">
+                <img src={profile} className="menu-button__img" alt="profile" />{' '}
+                Аккаунт
               </button>
             </Link>
           </ul>

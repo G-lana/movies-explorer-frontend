@@ -2,10 +2,10 @@ import SearchForm from './SearchForm/SearchForm';
 import MoviesCardList from './MoviesCardList/MoviesCardList';
 import More from './More/More';
 
-function Movies() {
+function Movies({ isChecked, turnOnCheckBox }) {
   return (
     <div className="movies">
-      <SearchForm />
+      <SearchForm isChecked={isChecked} turnOnCheckBox={turnOnCheckBox} />
       <MoviesCardList />
       <More />
     </div>

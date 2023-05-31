@@ -1,7 +1,7 @@
 function More() {
   return (
-    <div class="more">
-      <button class="more__button">Ещё</button>
+    <div className="more">
+      <button className="more__button">Ещё</button>
     </div>
   );
 }

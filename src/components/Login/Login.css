@@ -52,6 +52,7 @@
     border: none;
     outline: none;
     transition: .6s;
+    border-radius: 3px;
 }
 
 .login__button:hover {

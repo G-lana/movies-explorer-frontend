@@ -1,20 +1,17 @@
 // import likeActive from '../../../images/like_active.svg';
 import film from '../../../images/movie_img.png';
 
-function MoviesCard(isLiked) {
-  const movieLikeButtonClassName = `movie__like ${
-    isLiked ? 'movie__like_type_active' : ''
-  }`;
+function moviesCard() {
   return (
-    <article className="movie movies_movie">
-      <img className="movie__img" src={film} alt="movie__img" />
-      <div className="movie__info">
-        <div className="movie__info_text">
-          <h2 className="movie__name">33 слова о дизайне</h2>
-          <p className="movie__duration">1ч 47м</p>
+    <article className="saved-movie">
+      <img className="saved-movie__img" src={film} alt="saved-movie__img" />
+      <div className="saved-movie__info">
+        <div className="saved-movie__info_text">
+          <h2 className="saved-movie__name">33 слова о дизайне</h2>
+          <p className="saved-movie__duration">1ч 47м</p>
         </div>
         <button
-          className={movieLikeButtonClassName}
+          className="saved-movie__like"
           type="button"
           aria-label="Нравится"
         ></button>
@@ -23,4 +20,4 @@ function MoviesCard(isLiked) {
   );
 }
 
-export default MoviesCard;
+export default moviesCard;
