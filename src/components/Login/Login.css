@@ -1,0 +1,148 @@
+.login {
+    align-items: center;
+    display: grid;
+    height: 100%;
+}
+
+.login__container {
+    width: 396px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 70px auto 0;
+} 
+
+.login__greating {
+    font-size: 24px;
+    font-weight: 500;
+    margin: 40px 0;
+}
+
+.login__input {
+    outline: none;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #E8E8E8;
+    height: 32px;
+    font-size: 14px;
+    color: black;
+    margin: 0 0 24px;
+    font-weight: 400;
+}
+
+.login__input:focus {
+    border-bottom: 1px solid black;
+}
+
+.login__form_text {
+    font-size: 10px;
+    font-weight: 400;
+    margin: 0;
+    color: #A0A0A0;
+}
+
+.login__button {
+    width: 100%;
+    height: 45px;
+    background-color: black;
+    color: white;
+    font-size: 14px;
+    margin-top: 134px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: .6s;
+    border-radius: 3px;
+}
+
+.login__button:hover {
+    opacity: .6;
+}
+
+.login__button:focus {
+    opacity: 1;
+}
+
+.login__signup {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: row;
+    align-self: center;
+    margin-bottom: 70px;
+} 
+
+.login__signup-text {
+    margin: 0;
+    font-size: 14px;
+    color: #A0A0A0;
+    font-weight: 400;
+    margin-right: 6px;
+} 
+
+.login__signup-link {
+    color: black;
+    text-decoration: none;
+    font-size: 14px;
+    margin: 0;
+    font-weight: 400;
+    cursor: pointer;
+    transition: .6s;
+}
+
+.login__signup-link:hover {
+    opacity: .6;
+}
+
+.login__signup-link:focus {
+    opacity: 1;
+}
+
+@media screen and (max-width: 568px) {
+    .login__logo {
+        margin: auto;
+    }
+} 
+
+@media screen and (max-width: 568px) {
+    .login__container {
+        width: 260px;
+        padding-top: 56px;
+    }
+}
+
+@media screen and (max-width: 568px) {
+    .login__greating {
+        margin: 50px auto 80px;
+    }
+} 
+
+@media screen and (max-width: 984px) {
+    .login__button {
+        margin-top: 197px;
+    }
+} 
+
+@media screen and (max-width: 568px) {
+    .login__button {
+        font-size: 12px;
+        margin-top: 285px;
+    }
+}
+
+@media screen and (max-width: 568px) {
+    .login__signup {
+        margin: 14px 0 30px;
+    }
+}
+
+@media screen and (max-width: 568px) {
+    .login__signup-text {
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 568px) {
+    .login__signup-link {
+        font-size: 12px;
+    }
+} 

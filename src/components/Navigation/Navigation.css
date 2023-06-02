@@ -1,0 +1,131 @@
+.popup {
+  background-color: rgba(0, 0, 0, 0.3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  transition: visibility 0.4s, opacity 0.4s ease-in;
+  visibility: hidden;
+  opacity: 0;
+  display: flex;
+  z-index: 1;
+}
+
+.popup_open {
+  visibility: visible;
+  opacity: 1;
+}
+
+.popup__container {
+  background-color: white;
+  width: 520px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media screen and (max-width: 568px) {
+  .popup__container {
+    width: 100%;
+  }
+}
+
+.popup__close {
+  background-image: url(../../images/Close.svg);
+  background-color: transparent;
+  border: none;
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  background-size: contain;
+  cursor: pointer;
+  transition: .6s;
+}
+
+.popup__close:hover {
+  opacity: .6;
+}
+
+@media screen and (max-width: 568px) {
+  .popup__close {
+    top: 13px;
+    right: 13px;
+  }
+}
+
+.popup__menu {
+  list-style-type: none;
+  text-align: center;
+  padding: 0;
+  margin: 159px 0 0;
+}
+
+@media screen and (max-width: 568px) {
+  .popup__menu {
+    margin: 144px 0 0;
+  }
+}
+
+.popup__menu_item {
+  margin-bottom: 28px;
+}
+
+@media screen and (max-width: 568px) {
+  .popup__menu_item {
+    margin-bottom: 24px;
+  }
+}
+
+.popup__menu_link {
+  color: black;
+  font-size: 18px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: .6s;
+}
+
+.popup__menu_link:hover {
+  opacity: .6;
+}
+
+.popup__menu_link:focus {
+  text-decoration: underline;
+}
+
+.popup__button {
+  margin-bottom: 90px;
+  background-color: white;
+  color: black;
+  width: 100px;
+  height: 32px;
+  border-radius: 50px;
+  border: 1px #aaaaaa solid;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  font-family: 'Inter', Arial, sans-serif;
+  cursor: pointer;
+  transition: .6s;
+  text-decoration: none;
+}
+.popup__button:hover {
+  opacity: .6;
+}
+
+@media screen and (max-width: 568px) {
+  .popup__button {
+    margin-bottom: 46px;
+  }
+}

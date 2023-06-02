@@ -1,0 +1,154 @@
+.header__container {
+    color: black;
+    justify-content: space-between;
+    display: flex;
+    height: 74px;
+    max-width: 1280px;
+    margin: auto;
+}
+
+.header__container_violet {
+    background-color: #F3C1F8;
+}
+
+.header__container_white {
+    background-color: white;
+}
+
+.header__violet {
+    background-color: #F3C1F8;
+}
+
+.header__logo {
+    height: 38px;
+    width: 38px;
+    align-self: center;
+    padding-left: 70px;
+    transition: .6s;
+}
+
+.header__logo:hover {
+    opacity: .6;
+}
+
+.header__menu {
+    display: flex;
+    flex-direction: row;
+    list-style-type: none;
+    align-items: center;
+    padding-right: 70px;
+}
+
+.header__menu_item {
+    padding-right: 50px;
+    font-size: 14px;
+    font-weight: 400;
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+    transition: .6s;
+}
+
+.burger {
+    display: none;
+}
+
+.header__menu_item_type_signin {
+    background-color: black;
+    width: 76px;
+    height: 32px;
+    border-radius: 3px;
+    color: white;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
+
+.header__menu_item:first-of-type {
+    font-weight: 500;
+    padding-right: 30px;
+}
+
+.header__menu_item:last-of-type {
+    padding-right: 0;
+}
+
+.header__menu_item:hover {
+    opacity: .6;
+}
+
+.menu-button {
+    background-color: white;
+    color: black;
+    width: 100px;
+    height: 32px;
+    border-radius: 50px;
+    border: 1px #AAAAAA solid;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    font-family: 'Inter', Arial, sans-serif;
+    cursor: pointer;
+    transition: .6s;
+}
+
+.menu-button__img {
+    margin-right: 7px;
+}
+
+.menu-button:hover {
+    opacity: .8;
+}
+
+@media screen and (max-width: 984px) {
+    .header__logo {
+        padding-left: 30px;
+    }
+}
+
+@media screen and (max-width: 568px) {
+    .header__logo {
+        padding-left: 14px;
+    }
+}
+@media screen and (max-width: 984px) {
+    .header__menu {
+        padding-right: 30px;
+        display: none;
+    }
+
+    .header__menu_main {
+        display: flex;
+    }
+}
+
+@media screen and (max-width: 568px) {
+    .header__menu {
+        padding-right: 14px;
+    }
+}
+@media screen and (max-width: 984px) {
+    .burger {
+        display: block;
+        border: none;
+        align-self: center;
+        margin-right: 23px;
+        cursor: pointer;
+        outline: none;
+        transition: .6s;
+    }
+}
+
+@media screen and (max-width: 984px) {
+    .burger:hover {
+        opacity: .6;
+    }
+}
+
+@media screen and (max-width: 568px) {
+    .burger {
+        margin-right: 8px;
+    }
+}
