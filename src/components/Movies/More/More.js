@@ -1,8 +1,12 @@
-function More() {
+function More({ onMoreClick, isButtonActive }) {
   return (
-    <div className="more">
-      <button className="more__button">Ещё</button>
-    </div>
+    isButtonActive && (
+      <div className="more">
+        <button className="more__button" onClick={onMoreClick}>
+          Ещё
+        </button>
+      </div>
+    )
   );
 }
 

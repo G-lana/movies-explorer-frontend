@@ -1,13 +1,23 @@
 import SearchForm from './SearchForm/SearchForm';
 import MoviesCardList from './MoviesCardList/MoviesCardList';
-import More from './More/More';
+import React from 'react';
 
-function Movies({ isChecked, turnOnCheckBox }) {
+function Movies({
+  movies,
+  handleSearch,
+  windowWidth,
+  handleSaveMovie,
+  handleDeleteMovie,
+}) {
   return (
     <div className="movies">
-      <SearchForm isChecked={isChecked} turnOnCheckBox={turnOnCheckBox} />
-      <MoviesCardList />
-      <More />
+      <SearchForm handleSearch={handleSearch} windowWidth={windowWidth} />
+      <MoviesCardList
+        movies={movies}
+        windowWidth={windowWidth}
+        handleSaveMovie={handleSaveMovie}
+        handleDeleteMovie={handleDeleteMovie}
+      />
     </div>
   );
 }

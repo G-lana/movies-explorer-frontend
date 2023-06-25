@@ -15,7 +15,7 @@
     background-color: white;
 }
 
-.header__violet {
+.header__color_violet {
     background-color: #F3C1F8;
 }
 
@@ -65,7 +65,6 @@
 }
 
 .header__menu_item:first-of-type {
-    font-weight: 500;
     padding-right: 30px;
 }
 
@@ -75,6 +74,10 @@
 
 .header__menu_item:hover {
     opacity: .6;
+}
+
+.header__menu_item_bold {
+    font-weight: 500;
 }
 
 .menu-button {
@@ -92,6 +95,11 @@
     font-family: 'Inter', Arial, sans-serif;
     cursor: pointer;
     transition: .6s;
+}
+
+.menu-button_black {
+    background-color: black;
+    color: white;
 }
 
 .menu-button__img {

@@ -1,7 +1,30 @@
 import logo from '../../images/logo.svg';
 import { Link } from 'react-router-dom';
+import React from 'react';
 
-function Register() {
+function Register({ onRegister }) {
+  const [formValue, setFormValue] = React.useState({
+    mame: '',
+    email: '',
+    password: '',
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormValue({
+      ...formValue,
+      [name]: value,
+    });
+  };
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    onRegister({
+      name: formValue.name,
+      email: formValue.email,
+      password: formValue.password,
+    });
+  }
   return (
     <section className="register">
       <div className="register__container">
@@ -9,13 +32,14 @@ function Register() {
           <input type="image" src={logo} alt="logo" />
         </Link>
         <h1 className="register__greating">Добро пожаловать!</h1>
-        <form className="register__form">
+        <form className="register__form" onSubmit={handleSubmit}>
           <span className="register__form_text">Имя</span>
           <input
             className="register__input register__input_type_name"
             name="name"
             id="input-name"
             required
+            onChange={handleChange}
           />
           <span className="register__form_text">E-mail</span>
           <input
@@ -24,6 +48,7 @@ function Register() {
             id="input-email"
             type="email"
             required
+            onChange={handleChange}
           />
           <span className="register__form_text">Пароль</span>
           <input
@@ -32,6 +57,7 @@ function Register() {
             id="input-password"
             type="password"
             required
+            onChange={handleChange}
           />
           <button className="register__button" type="submit">
             Зарегистрироваться

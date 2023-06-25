@@ -1,0 +1,125 @@
+.search-form {
+  padding-top: 60px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #e8e8e8;
+  margin: 0 70px;
+}
+
+.search-form__form {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  color: #a0a0a0;
+  height: 46px;
+  border: none;
+  border-radius: 40px;
+  background-color: #f9f9f9;
+  margin-bottom: 41px;
+}
+
+.search-form__input {
+  font-size: 13px;
+  line-height: 17px;
+  padding-left: 22px;
+  outline: 0;
+  flex-grow: 2;
+  border: none;
+  border-radius: 40px;
+  background-color: #f9f9f9;
+  color: #a0a0a0;
+}
+
+.search-form__button {
+  background-color: black;
+  border-radius: 48px;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  margin: 6px 6px 0 6px;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: .6s;
+}
+
+.search-form__button:hover {
+  opacity: 0.6;
+}
+
+.checkbox {
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  align-items: center;
+  margin-bottom: 69px;
+}
+
+.checkbox__input {
+  appearance: none;
+  margin-right: 12px;
+  transition: .6s;
+  outline: none;
+}
+
+.checkbox__input:hover {
+  opacity: 0.8;
+}
+
+.checkbox__input_before {
+  content: '';
+  cursor: pointer;
+  display: block;
+  width: 36px;
+  height: 20px;
+  border-radius: 20px;
+  background-image: url(../../../images/checkbox_off.svg);
+  background-repeat: no-repeat;
+  z-index: 0;
+}
+
+.checkbox__input_type_active {
+  background-image: url(../../../images/checkbox_on.svg);
+  z-index: 1;
+}
+
+.checkbox__label {
+  font-size: 14px;
+  line-height: 18px;
+  position: relative;
+}
+
+@media screen and (max-width: 984px) {
+  .search-form {
+    padding-top: 80px;
+    margin: 0 30px;
+  }
+}
+
+@media screen and (max-width: 568px) {
+  .search-form {
+    margin: 0 14px;
+  }
+}
+
+@media screen and (max-width: 568px) {
+  .search-form__input {
+    font-size: 11px;
+    padding-left: 19px;
+  }
+}
+
+@media screen and (max-width: 568px) {
+  .checkbox {
+    margin-bottom: 49px;
+  }
+}
+
+@media screen and (max-width: 568px) {
+  .checkbox__label {
+    font-size: 11px;
+    line-height: 18px;
+  }
+}
