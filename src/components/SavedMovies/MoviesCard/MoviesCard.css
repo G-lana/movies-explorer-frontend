@@ -16,6 +16,8 @@
 
 .saved-movie__img {
     width: 100%;
+    height: 203px;
+    border-radius: 6px 6px 0 0;
 }
 
 .saved-movie__info_text {
@@ -26,12 +28,15 @@
     font-size: 13px;
     font-weight: 500;
     margin: 0;
+    height: 43px;
 }
 
 .saved-movie__duration {
     font-size: 11px;
     font-weight: 400;
     color: #A0A0A0;
+    margin: 0;
+    padding-bottom: 16px;
 }
 
 .saved-movie__info {
@@ -46,9 +51,12 @@
     cursor: pointer;
     border: none; 
     background-color: transparent;
-    width: 7px;
-    height: 7px;
+    /* background-size: contain;
+    background-repeat: no-repeat; */
+    width: 14px;
+    height: 12px;
     transition: .6s;
+    background-image: url(../../../images/like_active.svg);
 }
 
 /* .saved-movie__like_type_active {
@@ -58,6 +66,26 @@
 .saved-movie__like:hover {
     opacity: .6;
 }
+
+@media screen and (max-width: 984px) {
+    .saved-movie__img {
+        height: 190px;
+    }
+}
+
+
+@media screen and (max-width: 568px) {
+    .saved-movie__img {
+        height: 195px;
+    }
+}
+
+@media screen and (max-width: 390px) {
+    .saved-movie__img {
+        height: 168px;
+    }
+}
+
 
 @media screen and (max-width: 568px) {
     .saved-movie__name {

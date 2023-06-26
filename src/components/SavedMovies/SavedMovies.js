@@ -1,17 +1,27 @@
-// import SearchForm from '../Movies/SearchForm/SearchForm';
-// import MoviesCardList from '../Movies/MoviesCardList/MoviesCardList';
-import SearchForm from './SearchForm/SearchForm';
+import SearchForm from '../Movies/SearchForm/SearchForm';
 import MoviesCardList from './MoviesCardList/MoviesCardList';
+import React from 'react';
+import Preloader from '../Movies/Preloader/Preloader';
 
 function SavedMovies({
   savedMovies,
-  handleSearch,
+  updateFilter,
+  filter,
   windowWidth,
   handleDeleteMovie,
+  foundError,
+  clearAllErrors,
+  isLoading,
 }) {
+  React.useEffect(() => {
+    clearAllErrors();
+  }, []);
   return (
     <div className="saved_movies">
-      <SearchForm handleSearch={handleSearch} />
+      <SearchForm updateFilter={updateFilter} filter={filter} />
+      <span className="search-form__error">
+        {foundError ? 'Ничего не найдено' : ''}
+      </span>
       <MoviesCardList
         movies={savedMovies}
         windowWidth={windowWidth}

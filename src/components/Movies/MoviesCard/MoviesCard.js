@@ -2,17 +2,15 @@ import { useLocation } from 'react-router-dom';
 import React from 'react';
 
 function MovieCard({ data, handleSaveMovie, handleDeleteMovie }) {
-  const [isShown, setIsShown] = React.useState(false);
+  const isSaved = data.saved;
   const location = useLocation().pathname;
 
   function handleSave() {
     handleSaveMovie(data);
-    setIsShown(true);
   }
 
   function handleDelete() {
-    handleDeleteMovie(data);
-    setIsShown(false);
+    handleDeleteMovie(data.id);
   }
 
   function handleImageClick() {
@@ -22,7 +20,7 @@ function MovieCard({ data, handleSaveMovie, handleDeleteMovie }) {
   }
 
   const movieLikeButtonClassName = `movie__like ${
-    isShown ? 'movie__like_type_active' : ''
+    isSaved ? 'movie__like_type_active' : ''
   }`;
 
   const movieName = data.nameRU;
@@ -48,7 +46,7 @@ function MovieCard({ data, handleSaveMovie, handleDeleteMovie }) {
           className={movieLikeButtonClassName}
           type="button"
           aria-label="Нравится"
-          onClick={isShown ? handleDelete : handleSave}
+          onClick={isSaved ? handleDelete : handleSave}
         ></button>
       </div>
     </article>

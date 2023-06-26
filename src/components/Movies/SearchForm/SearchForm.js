@@ -1,43 +1,38 @@
 import searchIcon from '../../../images/search_icon.svg';
 import React from 'react';
 
-function SearchForm({ handleSearch }) {
-  const [checked, setChecked] = React.useState(false);
-  const [keyword, setKeyword] = React.useState('');
+function SearchForm({ filter, updateFilter }) {
+  const [onlyShort, setOnlyShort] = React.useState(filter.onlyShort);
+  const [search, setSearch] = React.useState(filter.search);
 
   const checkBoxClassName = `checkbox__input checkbox__input_before ${
-    checked ? 'checkbox__input_type_active' : ''
+    onlyShort ? 'checkbox__input_type_active' : ''
   }`;
 
-  function handleKeyword(evt) {
-    setKeyword(evt.target.value);
+  function handleSearchChange(evt) {
+    setSearch(evt.target.value);
   }
 
   function handleCheck() {
-    setChecked(!checked);
+    setOnlyShort(!onlyShort);
+    updateFilter({ ...filter, onlyShort: !onlyShort });
   }
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    localStorage.setItem('keyword', keyword);
-    handleSearch(checked);
+    updateFilter({
+      search,
+      onlyShort,
+    });
   }
 
-  React.useEffect(() => {
-    handleSearch(checked);
-    setKeyword(localStorage.getItem('keyword'));
-  }, []);
-
-  React.useEffect(() => {
-    handleSearch(checked);
-  }, [checked]);
   return (
     <section className="search-form">
       <form className="search-form__form" onSubmit={handleSubmit}>
         <input
           className="search-form__input"
           placeholder="Фильм"
-          onChange={handleKeyword}
+          onChange={handleSearchChange}
         />
         <button type="submit" className="search-form__button">
           <img

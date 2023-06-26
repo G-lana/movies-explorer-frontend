@@ -1,6 +1,6 @@
 function moviesCard({ data, handleDeleteMovie }) {
   const movieName = data.nameRU;
-  const movieImg = `https://api.nomoreparties.co${data.image.url}`;
+  const movieImg = `${data.image}`;
   const movieDuration =
     data.duration > 60
       ? `${Math.floor(data.duration / 60)}ч ${data.duration % 60}м`
@@ -17,7 +17,7 @@ function moviesCard({ data, handleDeleteMovie }) {
           className="saved-movie__like"
           type="button"
           aria-label="Нравится"
-          onClick={handleDeleteMovie}
+          onClick={() => handleDeleteMovie(data.movieId)}
         ></button>
       </div>
     </article>

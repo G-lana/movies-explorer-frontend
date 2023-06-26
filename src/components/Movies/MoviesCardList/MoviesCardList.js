@@ -53,7 +53,7 @@ function MoviesCardList({
       setRenderedMoviesList(movies);
       setIsButtonActive(false);
     }
-  }, [movies]);
+  }, [movies, location, renderedCardsCount]);
 
   return (
     <>
@@ -61,7 +61,7 @@ function MoviesCardList({
         {renderedMoviesList.map((data) => {
           return (
             <MovieCard
-              key={location === '/movies' ? data.id : data._id}
+              key={data.id}
               data={data}
               handleSaveMovie={handleSaveMovie}
               handleDeleteMovie={handleDeleteMovie}

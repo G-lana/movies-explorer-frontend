@@ -27,7 +27,7 @@
     height: 32px;
     font-size: 14px;
     color: black;
-    margin: 0 0 24px;
+    margin: 0;
     font-weight: 400;
 }
 
@@ -35,11 +35,18 @@
     border-bottom: 1px solid black;
 }
 
+.register__form {
+    display: flex;
+    flex-direction: column;
+    width: 396px;
+}
+
 .register__form_text {
     font-size: 10px;
     font-weight: 400;
     margin: 0;
     color: #A0A0A0;
+    margin-top: 24px;
 }
 
 .register__button {
@@ -48,12 +55,29 @@
     background-color: black;
     color: white;
     font-size: 14px;
-    margin-top: 134px;
     cursor: pointer;
     border: none;
     outline: none;
     border-radius: 3px;
     transition: .6s;
+    margin-top: 6px;
+}
+
+.register__button:disabled {
+    background-color: #d0d0d0;
+    cursor:default;
+    color: #595959;
+}
+
+.register__button:disabled:hover {
+    opacity: 1;
+}
+
+.register__button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 134px;
 }
 
 .register__button:hover {
@@ -97,9 +121,22 @@
     opacity: 1;
 }
 
+.register__error {
+    color: #FF4062;
+    font-size: 11px;
+    width: 396px;
+    margin-top: 6px;
+}
+
 @media screen and (max-width: 568px) {
     .register__logo {
         margin: auto;
+    }
+} 
+
+@media screen and (max-width: 568px) {
+    .register__error {
+        width: 260px;
     }
 } 
 

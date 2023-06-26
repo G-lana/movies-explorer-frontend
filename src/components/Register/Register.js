@@ -1,30 +1,36 @@
 import logo from '../../images/logo.svg';
 import { Link } from 'react-router-dom';
 import React from 'react';
+import { useFormWithValidation } from '../../utils/Validator';
 
-function Register({ onRegister }) {
-  const [formValue, setFormValue] = React.useState({
-    mame: '',
-    email: '',
-    password: '',
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormValue({
-      ...formValue,
-      [name]: value,
-    });
-  };
+function Register({
+  onRegister,
+  clearErrors,
+  registerError,
+  setRegisterError,
+}) {
+  const { values, handleChange, errors, isValid, resetForm } =
+    useFormWithValidation();
   function handleSubmit(e) {
     e.preventDefault();
-
     onRegister({
-      name: formValue.name,
-      email: formValue.email,
-      password: formValue.password,
+      email: values.email,
+      name: values.name,
+      password: values.password,
     });
+    resetForm();
   }
+  function handleClearErrors() {
+    resetForm();
+    clearErrors();
+  }
+  function handleChangeInput(e) {
+    handleChange(e);
+    if (registerError.length > 0) {
+      setRegisterError('');
+    }
+  }
+
   return (
     <section className="register">
       <div className="register__container">
@@ -38,34 +44,55 @@ function Register({ onRegister }) {
             className="register__input register__input_type_name"
             name="name"
             id="input-name"
+            type="text"
             required
-            onChange={handleChange}
+            onChange={handleChangeInput}
+            value={values.name || ''}
+            pattern="[а-яА-Яa-zA-ZёË\- ]{1,}"
+            minLength="2"
           />
+          <span className="register__error">{errors.name}</span>
           <span className="register__form_text">E-mail</span>
           <input
             className="register__input register__input_type_email"
             name="email"
             id="input-email"
             type="email"
+            value={values.email || ''}
+            onChange={handleChangeInput}
             required
-            onChange={handleChange}
           />
+          <span className="register__error">{errors.email}</span>
           <span className="register__form_text">Пароль</span>
           <input
             className="register__input register__input_type_password"
             name="password"
             id="input-password"
             type="password"
+            value={values.password || ''}
+            onChange={handleChangeInput}
             required
-            onChange={handleChange}
+            minLength="8"
           />
-          <button className="register__button" type="submit">
-            Зарегистрироваться
-          </button>
+          <span className="register__error">{errors.password}</span>
+          <div className="register__button-container">
+            <span className="register__error">{registerError}</span>
+            <button
+              className="register__button"
+              type="submit"
+              disabled={!isValid}
+            >
+              Зарегистрироваться
+            </button>
+          </div>
         </form>
         <div className="register__signin">
           <p className="register__signin-text">Уже зарегистрированы?</p>
-          <Link to="/signin" className="register__signin-link">
+          <Link
+            to="/signin"
+            className="register__signin-link"
+            onClick={handleClearErrors}
+          >
             Войти
           </Link>
         </div>

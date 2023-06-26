@@ -1,50 +1,60 @@
 import React from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { mainApi } from '../../utils/MainApi';
+import { useFormWithValidation } from '../../utils/Validator';
 
-function Profile({ onSignOut }) {
+function Profile({ onSignOut, updateCurrentUser }) {
+  const { values, handleChange, errors, isValid, resetForm, setValues } =
+    useFormWithValidation();
   const [isEdit, setIsEdit] = React.useState(false);
-  const [name, setName] = React.useState('');
-  const [email, setEmail] = React.useState('');
+  const [error, setError] = React.useState('');
   const currentUser = React.useContext(CurrentUserContext);
-  const token = localStorage.getItem('token');
-
-  React.useEffect(() => {
-    setName(currentUser.name);
-    setEmail(currentUser.email);
-  }, [currentUser]);
-
-  const handleNameChange = (e) => {
-    setName(e.target.value);
-  };
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
     if (isEdit) {
       mainApi
-        .editProfile({ name, email }, token)
-        .then(() => {
-          setName(name);
-          setEmail(email);
+        .editProfile({ name: values.name, email: values.email })
+        .then((res) => {
+          const name = res.data.name;
+          const email = res.data.email;
+          updateCurrentUser({ ...currentUser, name, email });
+          setError('Обновление данных профиля прошло успешно!');
+          setIsEdit(false);
         })
         .catch((err) => {
-          console.log(err);
+          err === 'Ошибка: 409'
+            ? setError('Пользователь с таким email уже существует.')
+            : setError('При обновлении профиля произошла ошибка.');
         })
         .finally(() => {
-          setIsEdit(false);
+          setError('');
         });
     } else {
       setIsEdit(true);
     }
   };
 
+  function handleClickSignOut() {
+    resetForm();
+    onSignOut();
+  }
+  function handleChangeInput(e) {
+    handleChange(e);
+    if (error.length > 0) {
+      setError('');
+    }
+  }
+  React.useEffect(() => {
+    setValues(currentUser);
+  }, [currentUser, setValues]);
+
+  console.log(currentUser);
+  console.log(values);
+
   return (
     <section className="profile">
-      <h1 className="profile__greeting">Привет, {name}!</h1>
+      <h1 className="profile__greeting">Привет, {currentUser.name}!</h1>
       <form className="profile-info__form" onSubmit={handleSubmit}>
         <div className="profile__info">
           <span className="profile__info_text profile__info_meaning">Имя</span>
@@ -56,11 +66,13 @@ function Profile({ onSignOut }) {
             required
             minLength="2"
             maxLength="40"
-            value={name}
+            value={values.name || ''}
+            pattern="[а-яА-Яa-zA-ZёË\- ]{1,}"
             disabled={!isEdit}
-            onChange={handleNameChange}
+            onChange={handleChangeInput}
           />
         </div>
+        <span className="profile__error">{errors.name}</span>
         <div className="profile__info">
           <span className="profile__info_text profile__info_meaning">
             E-mail
@@ -73,11 +85,12 @@ function Profile({ onSignOut }) {
             required
             minLength="2"
             maxLength="40"
-            value={email}
+            value={values.email || ''}
             disabled={!isEdit}
-            onChange={handleEmailChange}
+            onChange={handleChangeInput}
           />
         </div>
+        <span className="profile__error">{errors.email}</span>
         <div className="profile__links">
           {!isEdit ? (
             <>
@@ -90,20 +103,28 @@ function Profile({ onSignOut }) {
               </button>
               <button
                 className="profile_link profile__link_type_signout"
-                onClick={onSignOut}
+                onClick={handleClickSignOut}
                 type="button"
               >
                 Выйти из аккаунта
               </button>{' '}
             </>
           ) : (
-            <button
-              className="profile__button-save"
-              type="submit"
-              onSubmit={handleSubmit}
-            >
-              Сохранить
-            </button>
+            <div className="save-button__container">
+              <p className="profile__error profile__error_submit">{error}</p>
+              <button
+                className="profile__button-save"
+                type="submit"
+                onSubmit={handleSubmit}
+                disabled={
+                  !isValid ||
+                  (currentUser.name === values.name &&
+                    currentUser.email === values.email)
+                }
+              >
+                Сохранить
+              </button>
+            </div>
           )}
         </div>
       </form>

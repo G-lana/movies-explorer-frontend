@@ -9,7 +9,7 @@
 .movie__img {
     width: 100%;
     height: 203px;
-    border-radius: 6px;
+    border-radius: 6px 6px 0 0;
 }
 
 .movie__info_text {

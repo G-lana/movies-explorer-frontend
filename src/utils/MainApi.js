@@ -35,17 +35,6 @@ class MainApi {
     }).then((res) => this._requestResult(res));
   }
 
-  logout() {
-    return fetch(`${this._url}/signout`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-        Accept: 'application/json',
-      },
-    }).then((res) => this._requestResult(res));
-  }
-
   register({ name, email, password }) {
     return fetch(`${this._url}/signup`, {
       method: 'POST',
@@ -69,12 +58,12 @@ class MainApi {
     }).then((res) => this._requestResult(res));
   }
 
-  editProfile({ name, email }, token) {
+  editProfile({ name, email }) {
     return fetch(`${this._url}/users/me`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
         Accept: 'application/json',
       },
       credentials: 'include',

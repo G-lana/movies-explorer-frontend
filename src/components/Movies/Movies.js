@@ -4,20 +4,32 @@ import React from 'react';
 
 function Movies({
   movies,
-  handleSearch,
+  updateFilter,
+  filter,
   windowWidth,
   handleSaveMovie,
   handleDeleteMovie,
+  foundError,
+  clearAllErrors,
 }) {
+  React.useEffect(() => {
+    clearAllErrors();
+  }, []);
   return (
     <div className="movies">
-      <SearchForm handleSearch={handleSearch} windowWidth={windowWidth} />
-      <MoviesCardList
-        movies={movies}
-        windowWidth={windowWidth}
-        handleSaveMovie={handleSaveMovie}
-        handleDeleteMovie={handleDeleteMovie}
-      />
+      <SearchForm updateFilter={updateFilter} filter={filter} />
+      <span className="search-form__error">
+        {foundError ? 'Ничего не найдено' : ''}
+      </span>
+      {filter.search !== '' && (
+        <MoviesCardList
+          movies={movies}
+          windowWidth={windowWidth}
+          handleSaveMovie={handleSaveMovie}
+          handleDeleteMovie={handleDeleteMovie}
+          foundError={foundError}
+        />
+      )}
     </div>
   );
 }
