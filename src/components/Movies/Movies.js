@@ -11,6 +11,7 @@ function Movies({
   handleDeleteMovie,
   foundError,
   clearAllErrors,
+  serverError,
 }) {
   React.useEffect(() => {
     clearAllErrors();
@@ -20,6 +21,11 @@ function Movies({
       <SearchForm updateFilter={updateFilter} filter={filter} />
       <span className="search-form__error">
         {foundError ? 'Ничего не найдено' : ''}
+      </span>
+      <span className="server__error">
+        {serverError
+          ? 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'
+          : ''}
       </span>
       {filter.search !== '' && (
         <MoviesCardList

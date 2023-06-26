@@ -14,7 +14,7 @@
   border: none;
   border-radius: 40px;
   background-color: #f9f9f9;
-  margin-bottom: 41px;
+  margin-bottom: 6px;
 }
 
 .search-form__input {
@@ -43,6 +43,15 @@
   border: none;
   outline: none;
   transition: .6s;
+}
+
+.search-form__button:disabled {
+  background-color: #a0a0a0;
+  cursor: default;
+}
+
+.search-form__button:disabled:hover {
+  opacity: 1;
 }
 
 .search-form__button:hover {
@@ -83,6 +92,15 @@
 .checkbox__input_type_active {
   background-image: url(../../../images/checkbox_on.svg);
   z-index: 1;
+}
+
+.search__error {
+  color: #FF4062;
+    font-size: 12px;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 35px;
+    margin-left:22px;
 }
 
 .checkbox__label {

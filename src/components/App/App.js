@@ -33,26 +33,30 @@ function App() {
     location.pathname === '/saved-movies' ||
     location.pathname === '/profile';
 
+  const token = localStorage.getItem('token');
+
   const [isPopupOpen, setIsPopupOpen] = React.useState(false);
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(!!token);
   const [currentUser, setCurrentUser] = React.useState({});
   const [savedMovies, setSavedMovies] = React.useState([]);
   const [initialMovies, setInitialMovies] = React.useState([]);
   const [loginError, setLoginError] = React.useState('');
   const [registerError, setRegisterError] = React.useState('');
   const [foundError, setFoundError] = React.useState(false);
+  const [serverError, setServerError] = React.useState(false);
   const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
+  const [isLoading, setIsLoading] = React.useState(false);
   const [filter, setFilter] = React.useState({
     onlyShort: false,
     search: '',
   });
 
-  const token = localStorage.getItem('token');
-
   //-----------------------------Проверка токена, получение информации о пользователе и фильмах ---------------------------------------------//
 
   React.useEffect(() => {
     if (token) {
+      setIsLoading(true);
+      setIsLoggedIn(true);
       Promise.all([
         mainApi.getProfile(),
         moviesApi.getMovies(),
@@ -62,11 +66,15 @@ function App() {
           const [userInfo, moviesList, savedMovies] = res;
           setCurrentUser(userInfo.data);
           setIsLoggedIn(true);
+          setIsLoading(false);
           localStorage.setItem('userId', userInfo.data._id);
           setInitialMovies(moviesList);
           setSavedMovies(savedMovies.data);
         })
         .catch((err) => {
+          setIsLoggedIn(false);
+          setIsLoading(false);
+          setServerError(true);
           console.log(err);
         });
     }
@@ -142,6 +150,7 @@ function App() {
       })
       .catch(() => {
         setSavedMovies([]);
+        setServerError(true);
       });
   }
 
@@ -160,10 +169,10 @@ function App() {
             item.id === newSavedMovie.id ? newSavedMovie : item
           )
         );
-        localStorage.setItem('movies', JSON.stringify(initialMovies));
       })
       .catch((err) => {
         console.log(err);
+        setServerError(true);
       });
   }
 
@@ -179,7 +188,10 @@ function App() {
 
         setSavedMovies(newSavedMovies);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setServerError(true);
+        console.log(err);
+      });
   }
 
   function updateWidth() {
@@ -249,6 +261,7 @@ function App() {
             element={
               <ProtectedRouteElement
                 isLoggedIn={isLoggedIn}
+                isLoading={isLoading}
                 children={
                   <Movies
                     movies={renderMovies}
@@ -260,6 +273,7 @@ function App() {
                     handleDeleteMovie={handleDeleteMovie}
                     foundError={foundError}
                     clearAllErrors={clearAllErrors}
+                    serverError={serverError}
                   />
                 }
               />
@@ -270,6 +284,7 @@ function App() {
             element={
               <ProtectedRouteElement
                 isLoggedIn={isLoggedIn}
+                isLoading={isLoading}
                 children={
                   <SavedMovies
                     savedMovies={renderMovies}
@@ -291,6 +306,7 @@ function App() {
             element={
               <ProtectedRouteElement
                 isLoggedIn={isLoggedIn}
+                isLoading={isLoading}
                 children={
                   <Profile
                     onSignOut={handleSignOut}

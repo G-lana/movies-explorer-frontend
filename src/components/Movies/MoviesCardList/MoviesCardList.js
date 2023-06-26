@@ -1,7 +1,6 @@
 import More from '../More/More';
 import MovieCard from '../MoviesCard/MoviesCard';
 import React from 'react';
-import { useLocation } from 'react-router-dom';
 
 function MoviesCardList({
   movies,
@@ -13,20 +12,6 @@ function MoviesCardList({
   const [isButtonActive, setIsButtonActive] = React.useState(false);
   const [renderedCardsCount, setRenderedCardsCount] = React.useState(12);
   const [addedCardsCount, setAddedCardsCount] = React.useState(0);
-  const location = useLocation().pathname;
-
-  function cardsCount() {
-    if (windowWidth > 984) {
-      setRenderedCardsCount(12);
-      setAddedCardsCount(3);
-    } else if (windowWidth <= 984 && windowWidth > 568) {
-      setRenderedCardsCount(8);
-      setAddedCardsCount(2);
-    } else if (windowWidth <= 568) {
-      setRenderedCardsCount(5);
-      setAddedCardsCount(2);
-    }
-  }
 
   function handleMoreClick() {
     setRenderedMoviesList(
@@ -38,22 +23,24 @@ function MoviesCardList({
   }
 
   React.useEffect(() => {
-    cardsCount();
+    if (windowWidth > 984) {
+      setRenderedCardsCount(12);
+      setAddedCardsCount(3);
+    } else if (windowWidth <= 984 && windowWidth > 568) {
+      setRenderedCardsCount(8);
+      setAddedCardsCount(2);
+    } else if (windowWidth <= 568) {
+      setRenderedCardsCount(5);
+      setAddedCardsCount(2);
+    }
   }, [windowWidth]);
 
   React.useEffect(() => {
-    if (location === '/movies') {
-      setRenderedMoviesList(movies.slice(0, renderedCardsCount));
-      if (movies.length <= renderedCardsCount) {
-        setIsButtonActive(false);
-      } else {
-        setIsButtonActive(true);
-      }
-    } else {
-      setRenderedMoviesList(movies);
-      setIsButtonActive(false);
-    }
-  }, [movies, location, renderedCardsCount]);
+    const moviesCount = renderedMoviesList.length || renderedCardsCount;
+    setRenderedMoviesList(movies.slice(0, moviesCount));
+
+    setIsButtonActive(movies.length > moviesCount);
+  }, [movies, renderedCardsCount]);
 
   return (
     <>

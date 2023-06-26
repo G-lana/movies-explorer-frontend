@@ -1,7 +1,6 @@
 import SearchForm from '../Movies/SearchForm/SearchForm';
 import MoviesCardList from './MoviesCardList/MoviesCardList';
 import React from 'react';
-import Preloader from '../Movies/Preloader/Preloader';
 
 function SavedMovies({
   savedMovies,
@@ -11,7 +10,6 @@ function SavedMovies({
   handleDeleteMovie,
   foundError,
   clearAllErrors,
-  isLoading,
 }) {
   React.useEffect(() => {
     clearAllErrors();
