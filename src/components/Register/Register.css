@@ -128,6 +128,10 @@
     margin-top: 6px;
 }
 
+.error-submit {
+    text-align: center;
+}
+
 @media screen and (max-width: 568px) {
     .register__logo {
         margin: auto;

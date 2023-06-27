@@ -8,9 +8,14 @@ function Register({
   clearErrors,
   registerError,
   setRegisterError,
+  isInputsActive,
 }) {
+  const EMAIL_REGEXP =
+    '^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@' +
+    '[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$';
   const { values, handleChange, errors, isValid, resetForm } =
     useFormWithValidation();
+
   function handleSubmit(e) {
     e.preventDefault();
     onRegister({
@@ -18,8 +23,8 @@ function Register({
       name: values.name,
       password: values.password,
     });
-    resetForm();
   }
+
   function handleClearErrors() {
     resetForm();
     clearErrors();
@@ -50,6 +55,7 @@ function Register({
             value={values.name || ''}
             pattern="[а-яА-Яa-zA-ZёË\- ]{1,}"
             minLength="2"
+            disabled={isInputsActive}
           />
           <span className="register__error">{errors.name}</span>
           <span className="register__form_text">E-mail</span>
@@ -58,9 +64,11 @@ function Register({
             name="email"
             id="input-email"
             type="email"
+            pattern={EMAIL_REGEXP}
             value={values.email || ''}
             onChange={handleChangeInput}
             required
+            disabled={isInputsActive}
           />
           <span className="register__error">{errors.email}</span>
           <span className="register__form_text">Пароль</span>
@@ -73,10 +81,13 @@ function Register({
             onChange={handleChangeInput}
             required
             minLength="8"
+            disabled={isInputsActive}
           />
           <span className="register__error">{errors.password}</span>
           <div className="register__button-container">
-            <span className="register__error">{registerError}</span>
+            <span className="register__error error-submit">
+              {registerError}
+            </span>
             <button
               className="register__button"
               type="submit"

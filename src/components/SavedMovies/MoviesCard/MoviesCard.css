@@ -6,13 +6,6 @@
     border-radius: 6px;
     cursor: pointer;
 }
-.saved-movie:hover .saved-movie__like {
-    background-image: url(../../../images/deleteCard.svg);
-    background-repeat: no-repeat;
-    background-size: contain;
-    width: 7px;
-    height: 7px;
-    }
 
 .saved-movie__img {
     width: 100%;
@@ -46,17 +39,17 @@
 }
 
 .saved-movie__like {
+    background-image: url(../../../images/deleteCard.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 7px;
+    height: 7px;
     margin-right: 24px;
     align-self: baseline;
     cursor: pointer;
     border: none; 
     background-color: transparent;
-    /* background-size: contain;
-    background-repeat: no-repeat; */
-    width: 14px;
-    height: 12px;
     transition: .6s;
-    background-image: url(../../../images/like_active.svg);
 }
 
 /* .saved-movie__like_type_active {

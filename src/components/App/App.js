@@ -19,6 +19,8 @@ import Error from '../Error/Error';
 import { moviesApi } from '../../utils/MoviesApi';
 import { mainApi } from '../../utils/MainApi';
 
+import { SHORT_FILM_DURATION } from '../../constants/constants';
+
 function App() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -41,6 +43,7 @@ function App() {
   const [savedMovies, setSavedMovies] = React.useState([]);
   const [initialMovies, setInitialMovies] = React.useState([]);
   const [loginError, setLoginError] = React.useState('');
+  const [isInputsActive, setIsInputsActive] = React.useState(false);
   const [registerError, setRegisterError] = React.useState('');
   const [foundError, setFoundError] = React.useState(false);
   const [serverError, setServerError] = React.useState(false);
@@ -55,6 +58,27 @@ function App() {
 
   React.useEffect(() => {
     if (token) {
+      mainApi
+        .isValidToken(token)
+        .then((res) => {
+          if (
+            location.pathname === '/signup' ||
+            location.pathname === '/signin'
+          ) {
+            setCurrentUser(res.data);
+            setIsLoggedIn(true);
+            navigate('/movies');
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          setIsLoggedIn(false);
+        });
+    }
+  }, [navigate, location.pathname, token]);
+
+  React.useEffect(() => {
+    if (isLoggedIn) {
       setIsLoading(true);
       setIsLoggedIn(true);
       Promise.all([
@@ -68,8 +92,13 @@ function App() {
           setIsLoggedIn(true);
           setIsLoading(false);
           localStorage.setItem('userId', userInfo.data._id);
-          setInitialMovies(moviesList);
           setSavedMovies(savedMovies.data);
+          if (JSON.parse(localStorage.getItem('movies')).length === 0) {
+            localStorage.setItem('movies', JSON.stringify(moviesList));
+            setInitialMovies(moviesList);
+          } else {
+            setInitialMovies(JSON.parse(localStorage.getItem('movies')));
+          }
         })
         .catch((err) => {
           setIsLoggedIn(false);
@@ -80,31 +109,13 @@ function App() {
     }
   }, [isLoggedIn, token]);
 
-  React.useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      mainApi
-        .isValidToken(token)
-        .then((res) => {
-          if (
-            location.pathname === '/signup' ||
-            location.pathname === '/signin'
-          ) {
-            setCurrentUser(res.data);
-            setIsLoggedIn(true);
-            navigate('/movies');
-          }
-        })
-        .catch(console.error);
-    }
-  }, [navigate, location.pathname]);
-
   //--------------------------------------Регистрация, авторизация, выход из аккаунта--------------------------------------//
 
   function handleSubmitRegister({ email, password, name }) {
     mainApi
       .register({ email, password, name })
       .then((data) => {
+        setIsInputsActive(true);
         if (data._id) {
           handleSubmitLogin({ email, password });
         }
@@ -113,6 +124,9 @@ function App() {
         setRegisterError('Что-то пошло не так! Попробуйте ещё раз.');
         if (err === 400)
           return setRegisterError('Некорректно заполнено одно из полей');
+      })
+      .finally(() => {
+        setIsInputsActive(false);
       });
   }
 
@@ -120,6 +134,7 @@ function App() {
     mainApi
       .login(email, password)
       .then((res) => {
+        setIsInputsActive(true);
         localStorage.setItem('token', res.token);
         setIsLoggedIn(true);
         setCurrentUser(res);
@@ -131,13 +146,18 @@ function App() {
         if (err === 401)
           return setLoginError('Пользователь с таким email не найден');
         setLoginError('Попробуйте еще раз!');
+      })
+      .finally(() => {
+        setIsInputsActive(false);
       });
   }
 
   function handleSignOut() {
-    localStorage.clear();
-    setIsLoggedIn(false);
-    navigate('/');
+    mainApi.logout().then(() => {
+      localStorage.clear();
+      setIsLoggedIn(false);
+      navigate('/');
+    });
   }
 
   //-------------------------------------------------Работа с фильмами---------------------------------------------------------------//
@@ -232,7 +252,7 @@ function App() {
         .includes(filter.search.toLowerCase());
 
       if (filter.onlyShort) {
-        return isTitleMatched && movie.duration <= 40;
+        return isTitleMatched && movie.duration <= SHORT_FILM_DURATION;
       }
 
       return isTitleMatched;
@@ -250,10 +270,19 @@ function App() {
     [filteredMovies, savedMovies]
   );
 
+  localStorage.setItem('movies', JSON.stringify(renderMovies));
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        {showHeader && <Header openPopup={openPopup} loggedIn={isLoggedIn} />}
+        {showHeader && (
+          <Header
+            openPopup={openPopup}
+            loggedIn={isLoggedIn}
+            filter={filter}
+            updateFilter={setFilter}
+          />
+        )}
         <Routes>
           <Route path="/" element={<Main />} />
           <Route
@@ -324,6 +353,7 @@ function App() {
                 clearErrors={clearAllErrors}
                 loginError={loginError}
                 setLoginError={setLoginError}
+                isInputsActive={isInputsActive}
               />
             }
           />
@@ -335,6 +365,7 @@ function App() {
                 clearErrors={clearAllErrors}
                 registerError={registerError}
                 setRegisterError={setRegisterError}
+                isInputsActive={isInputsActive}
               />
             }
           />

@@ -47,6 +47,17 @@ class MainApi {
     }).then((res) => this._requestResult(res));
   }
 
+  logout() {
+    return fetch(`${this._url}/signout`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Accept: 'application/json',
+      },
+    }).then((res) => this._requestResult(res));
+  }
+
   getProfile() {
     return fetch(`${this._url}/users/me`, {
       headers: {

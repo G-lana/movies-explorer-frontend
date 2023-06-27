@@ -3,10 +3,11 @@ import profile from '../../images/profile.svg';
 import whiteProfile from '../../images/white-profile.svg';
 import { Link, useLocation } from 'react-router-dom';
 import menu from '../../images/menu.svg';
+import React from 'react';
 
-function Header({ openPopup, loggedIn }) {
+function Header({ openPopup, loggedIn, filter, updateFilter }) {
   const location = useLocation();
-  const token = localStorage.getItem('token');
+  // const [onlyShort, setOnlyShort] = React.useState(filter.onlyShort);
   const moviesLocation = location.pathname === '/movies';
   const savedMoviesLocation = location.pathname === '/saved-movies';
   const purpleHeader = location.pathname === '/';
@@ -26,9 +27,13 @@ function Header({ openPopup, loggedIn }) {
     savedMoviesLocation ? 'header__menu_item_bold' : ''
   }`;
   const imgSrc = purpleHeader ? whiteProfile : profile;
+
+  function clearFilter() {
+    updateFilter({ ...filter, search: '' });
+  }
   return (
     <header className="header">
-      {!token && (
+      {!loggedIn && (
         <div className={headerMainClassName}>
           <div className={headerClassName}>
             <Link to="/" className="header__logo">
@@ -51,7 +56,7 @@ function Header({ openPopup, loggedIn }) {
           </div>
         </div>
       )}
-      {token && (
+      {loggedIn && (
         <div className={headerMainClassName}>
           <div className={headerClassName}>
             <Link to="/" className="header__logo">
@@ -65,10 +70,18 @@ function Header({ openPopup, loggedIn }) {
               onClick={openPopup}
             />
             <ul className="header__menu">
-              <Link to="/movies" className={menuItemMoviesClassName}>
+              <Link
+                to="/movies"
+                className={menuItemMoviesClassName}
+                onClick={clearFilter}
+              >
                 Фильмы
               </Link>
-              <Link to="/saved-movies" className={menuItemSavedMoviesClassName}>
+              <Link
+                to="/saved-movies"
+                className={menuItemSavedMoviesClassName}
+                onClick={clearFilter}
+              >
                 Сохраненные фильмы
               </Link>
               <Link

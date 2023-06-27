@@ -3,13 +3,18 @@ import { Link } from 'react-router-dom';
 import React from 'react';
 import { useFormWithValidation } from '../../utils/Validator';
 
-function Login({ onLogin, clearErrors, loginError, setLoginError }) {
+function Login({
+  onLogin,
+  clearErrors,
+  loginError,
+  setLoginError,
+  isInputsActive,
+}) {
   const { values, handleChange, errors, isValid, resetForm } =
     useFormWithValidation();
   function handleSubmit(e) {
     e.preventDefault();
     onLogin({ email: values.email, password: values.password });
-    resetForm();
   }
   function handleClearErrors() {
     resetForm();
@@ -38,6 +43,7 @@ function Login({ onLogin, clearErrors, loginError, setLoginError }) {
             required
             onChange={handleChangeInput}
             value={values.email || ''}
+            disabled={isInputsActive}
           />
           <span className="login__error">{errors.email}</span>
           <span className="login__form_text">Пароль</span>
@@ -50,6 +56,7 @@ function Login({ onLogin, clearErrors, loginError, setLoginError }) {
             onChange={handleChangeInput}
             value={values.password || ''}
             minLength="8"
+            disabled={isInputsActive}
           />
           <span className="login__error">{errors.password}</span>
           <div className="register__button-container">

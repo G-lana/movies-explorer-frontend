@@ -1,7 +1,7 @@
 import searchIcon from '../../../images/search_icon.svg';
 import React from 'react';
 
-function SearchForm({ filter, updateFilter, setRenderedMoviesList }) {
+function SearchForm({ filter, updateFilter }) {
   const [onlyShort, setOnlyShort] = React.useState(filter.onlyShort);
   const [search, setSearch] = React.useState(filter.search);
   const [validForm, setValidForm] = React.useState(true);
@@ -17,19 +17,16 @@ function SearchForm({ filter, updateFilter, setRenderedMoviesList }) {
   function handleCheck() {
     setOnlyShort(!onlyShort);
     updateFilter({ ...filter, onlyShort: !onlyShort });
-    setRenderedMoviesList([]);
-    localStorage.setItem('onlyShort', !onlyShort);
   }
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    localStorage.setItem('search', search);
     if (search.length === 0) {
       setValidForm(false);
     } else {
       setValidForm(true);
       updateFilter({
-        search: localStorage.getItem('search'),
+        search,
         onlyShort,
       });
     }

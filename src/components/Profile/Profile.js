@@ -2,12 +2,17 @@ import React from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { mainApi } from '../../utils/MainApi';
 import { useFormWithValidation } from '../../utils/Validator';
+import Success from './Success/Success';
 
 function Profile({ onSignOut, updateCurrentUser }) {
+  const EMAIL_REGEXP =
+    '^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@' +
+    '[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$';
   const { values, handleChange, errors, isValid, resetForm, setValues } =
     useFormWithValidation();
   const [isEdit, setIsEdit] = React.useState(false);
   const [error, setError] = React.useState('');
+  const [isSuccess, setIsSuccess] = React.useState(false);
   const currentUser = React.useContext(CurrentUserContext);
 
   const handleSubmit = (evt) => {
@@ -19,7 +24,6 @@ function Profile({ onSignOut, updateCurrentUser }) {
           const name = res.data.name;
           const email = res.data.email;
           updateCurrentUser({ ...currentUser, name, email });
-          setError('Обновление данных профиля прошло успешно!');
           setIsEdit(false);
         })
         .catch((err) => {
@@ -28,7 +32,10 @@ function Profile({ onSignOut, updateCurrentUser }) {
             : setError('При обновлении профиля произошла ошибка.');
         })
         .finally(() => {
-          setError('');
+          setIsSuccess(true);
+          setTimeout(() => {
+            setIsSuccess(false);
+          }, 1000);
         });
     } else {
       setIsEdit(true);
@@ -49,86 +56,89 @@ function Profile({ onSignOut, updateCurrentUser }) {
     setValues(currentUser);
   }, [currentUser, setValues]);
 
-  console.log(currentUser);
-  console.log(values);
-
   return (
-    <section className="profile">
-      <h1 className="profile__greeting">Привет, {currentUser.name}!</h1>
-      <form className="profile-info__form" onSubmit={handleSubmit}>
-        <div className="profile__info">
-          <span className="profile__info_text profile__info_meaning">Имя</span>
-          <input
-            className="profile__info_text profile__info_value"
-            id="name-input"
-            type="text"
-            name="name"
-            required
-            minLength="2"
-            maxLength="40"
-            value={values.name || ''}
-            pattern="[а-яА-Яa-zA-ZёË\- ]{1,}"
-            disabled={!isEdit}
-            onChange={handleChangeInput}
-          />
-        </div>
-        <span className="profile__error">{errors.name}</span>
-        <div className="profile__info">
-          <span className="profile__info_text profile__info_meaning">
-            E-mail
-          </span>
-          <input
-            className="profile__info_text profile__info_value"
-            id="email-input"
-            type="email"
-            name="email"
-            required
-            minLength="2"
-            maxLength="40"
-            value={values.email || ''}
-            disabled={!isEdit}
-            onChange={handleChangeInput}
-          />
-        </div>
-        <span className="profile__error">{errors.email}</span>
-        <div className="profile__links">
-          {!isEdit ? (
-            <>
-              <button
-                className="profile_link profile__link_type_edit"
-                onSubmit={handleSubmit}
-                type="submit"
-              >
-                Редактировать
-              </button>
-              <button
-                className="profile_link profile__link_type_signout"
-                onClick={handleClickSignOut}
-                type="button"
-              >
-                Выйти из аккаунта
-              </button>{' '}
-            </>
-          ) : (
-            <div className="save-button__container">
-              <p className="profile__error profile__error_submit">{error}</p>
-              <button
-                className="profile__button-save"
-                type="submit"
-                onSubmit={handleSubmit}
-                disabled={
-                  !isValid ||
-                  (currentUser.name === values.name &&
-                    currentUser.email === values.email)
-                }
-              >
-                Сохранить
-              </button>
-            </div>
-          )}
-        </div>
-      </form>
-    </section>
+    <>
+      <section className="profile">
+        <h1 className="profile__greeting">Привет, {currentUser.name}!</h1>
+        <form className="profile-info__form" onSubmit={handleSubmit}>
+          <div className="profile__info">
+            <span className="profile__info_text profile__info_meaning">
+              Имя
+            </span>
+            <input
+              className="profile__info_text profile__info_value"
+              id="name-input"
+              type="text"
+              name="name"
+              required
+              minLength="2"
+              maxLength="40"
+              value={values.name || ''}
+              pattern="[а-яА-Яa-zA-ZёË\- ]{1,}"
+              disabled={!isEdit}
+              onChange={handleChangeInput}
+            />
+          </div>
+          <span className="profile__error">{errors.name}</span>
+          <div className="profile__info">
+            <span className="profile__info_text profile__info_meaning">
+              E-mail
+            </span>
+            <input
+              className="profile__info_text profile__info_value"
+              id="email-input"
+              type="email"
+              name="email"
+              pattern={EMAIL_REGEXP}
+              required
+              minLength="2"
+              maxLength="40"
+              value={values.email || ''}
+              disabled={!isEdit}
+              onChange={handleChangeInput}
+            />
+          </div>
+          <span className="profile__error">{errors.email}</span>
+          <div className="profile__links">
+            {!isEdit ? (
+              <>
+                <button
+                  className="profile_link profile__link_type_edit"
+                  onSubmit={handleSubmit}
+                  type="submit"
+                >
+                  Редактировать
+                </button>
+                <button
+                  className="profile_link profile__link_type_signout"
+                  onClick={handleClickSignOut}
+                  type="button"
+                >
+                  Выйти из аккаунта
+                </button>{' '}
+              </>
+            ) : (
+              <div className="save-button__container">
+                <p className="profile__error profile__error_submit">{error}</p>
+                <button
+                  className="profile__button-save"
+                  type="submit"
+                  onSubmit={handleSubmit}
+                  disabled={
+                    !isValid ||
+                    (currentUser.name === values.name &&
+                      currentUser.email === values.email)
+                  }
+                >
+                  Сохранить
+                </button>
+              </div>
+            )}
+          </div>
+        </form>
+      </section>
+      <Success isSuccess={isSuccess} />
+    </>
   );
 }
 
