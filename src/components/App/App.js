@@ -19,8 +19,6 @@ import Error from '../Error/Error';
 import { moviesApi } from '../../utils/MoviesApi';
 import { mainApi } from '../../utils/MainApi';
 
-import { SHORT_FILM_DURATION } from '../../constants/constants';
-
 function App() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -45,16 +43,16 @@ function App() {
   const [loginError, setLoginError] = React.useState('');
   const [isInputsActive, setIsInputsActive] = React.useState(false);
   const [registerError, setRegisterError] = React.useState('');
-  const [foundError, setFoundError] = React.useState(false);
   const [serverError, setServerError] = React.useState(false);
   const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
   const [isLoading, setIsLoading] = React.useState(false);
-  const [filter, setFilter] = React.useState({
-    onlyShort: false,
-    search: '',
-  });
 
   //-----------------------------Проверка токена, получение информации о пользователе и фильмах ---------------------------------------------//
+
+  React.useEffect(() => {
+    const storedMovies = JSON.parse(localStorage.getItem('movies'));
+    setInitialMovies(storedMovies);
+  }, []);
 
   React.useEffect(() => {
     if (token) {
@@ -91,14 +89,11 @@ function App() {
           setCurrentUser(userInfo.data);
           setIsLoggedIn(true);
           setIsLoading(false);
-          localStorage.setItem('userId', userInfo.data._id);
           setSavedMovies(savedMovies.data);
-          if (JSON.parse(localStorage.getItem('movies')).length === 0) {
-            localStorage.setItem('movies', JSON.stringify(moviesList));
-            setInitialMovies(moviesList);
-          } else {
-            setInitialMovies(JSON.parse(localStorage.getItem('movies')));
-          }
+          setInitialMovies(moviesList);
+
+          localStorage.setItem('userId', userInfo.data._id);
+          localStorage.setItem('movies', JSON.stringify(moviesList));
         })
         .catch((err) => {
           setIsLoggedIn(false);
@@ -238,51 +233,11 @@ function App() {
   function clearAllErrors() {
     setLoginError('');
     setRegisterError('');
-    setFoundError(false);
   }
-
-  //--------------------------------------------------------------------Фильтрация фильмов-------------------------------------------------------------//
-
-  const filteredMovies = useMemo(() => {
-    const movies =
-      location.pathname === '/movies' ? initialMovies : savedMovies;
-    const sortedMovies = movies.filter((movie) => {
-      const isTitleMatched = movie.nameRU
-        .toLowerCase()
-        .includes(filter.search.toLowerCase());
-
-      if (filter.onlyShort) {
-        return isTitleMatched && movie.duration <= SHORT_FILM_DURATION;
-      }
-
-      return isTitleMatched;
-    });
-    sortedMovies.length === 0 ? setFoundError(true) : setFoundError(false);
-    return sortedMovies;
-  }, [filter, initialMovies, savedMovies, location.pathname]);
-
-  const renderMovies = useMemo(
-    () =>
-      filteredMovies.map((item) => ({
-        ...item,
-        saved: savedMovies.some((savedMovie) => savedMovie.movieId === item.id),
-      })),
-    [filteredMovies, savedMovies]
-  );
-
-  localStorage.setItem('movies', JSON.stringify(renderMovies));
-
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        {showHeader && (
-          <Header
-            openPopup={openPopup}
-            loggedIn={isLoggedIn}
-            filter={filter}
-            updateFilter={setFilter}
-          />
-        )}
+        {showHeader && <Header openPopup={openPopup} loggedIn={isLoggedIn} />}
         <Routes>
           <Route path="/" element={<Main />} />
           <Route
@@ -293,14 +248,12 @@ function App() {
                 isLoading={isLoading}
                 children={
                   <Movies
-                    movies={renderMovies}
+                    movies={initialMovies}
                     isLoggedIn={isLoggedIn}
-                    updateFilter={setFilter}
-                    filter={filter}
                     windowWidth={windowWidth}
                     handleSaveMovie={handleSaveMovie}
+                    savedMoviesIds={savedMovies.map((item) => item.movieId)}
                     handleDeleteMovie={handleDeleteMovie}
-                    foundError={foundError}
                     clearAllErrors={clearAllErrors}
                     serverError={serverError}
                   />
@@ -316,14 +269,11 @@ function App() {
                 isLoading={isLoading}
                 children={
                   <SavedMovies
-                    savedMovies={renderMovies}
+                    movies={savedMovies}
                     isLoggedIn={isLoggedIn}
-                    updateFilter={setFilter}
-                    filter={filter}
                     windowWidth={windowWidth}
                     handleSaveMovie={handleSaveMovie}
                     handleDeleteMovie={handleDeleteMovie}
-                    foundError={foundError}
                     clearAllErrors={clearAllErrors}
                   />
                 }

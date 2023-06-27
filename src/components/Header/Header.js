@@ -5,7 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 import menu from '../../images/menu.svg';
 import React from 'react';
 
-function Header({ openPopup, loggedIn, filter, updateFilter }) {
+function Header({ openPopup, loggedIn }) {
   const location = useLocation();
   // const [onlyShort, setOnlyShort] = React.useState(filter.onlyShort);
   const moviesLocation = location.pathname === '/movies';
@@ -28,9 +28,6 @@ function Header({ openPopup, loggedIn, filter, updateFilter }) {
   }`;
   const imgSrc = purpleHeader ? whiteProfile : profile;
 
-  function clearFilter() {
-    updateFilter({ ...filter, search: '' });
-  }
   return (
     <header className="header">
       {!loggedIn && (
@@ -70,18 +67,10 @@ function Header({ openPopup, loggedIn, filter, updateFilter }) {
               onClick={openPopup}
             />
             <ul className="header__menu">
-              <Link
-                to="/movies"
-                className={menuItemMoviesClassName}
-                onClick={clearFilter}
-              >
+              <Link to="/movies" className={menuItemMoviesClassName}>
                 Фильмы
               </Link>
-              <Link
-                to="/saved-movies"
-                className={menuItemSavedMoviesClassName}
-                onClick={clearFilter}
-              >
+              <Link to="/saved-movies" className={menuItemSavedMoviesClassName}>
                 Сохраненные фильмы
               </Link>
               <Link

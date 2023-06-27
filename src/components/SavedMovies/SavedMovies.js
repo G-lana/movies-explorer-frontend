@@ -1,27 +1,47 @@
 import SearchForm from './SearchForm/SearchForm';
 import MoviesCardList from './MoviesCardList/MoviesCardList';
-import React from 'react';
+import React, { useState } from 'react';
+import { SHORT_FILM_DURATION } from '../../constants/constants';
 
 function SavedMovies({
-  savedMovies,
-  updateFilter,
-  filter,
+  movies,
   windowWidth,
   handleDeleteMovie,
-  foundError,
   clearAllErrors,
 }) {
+  const [filter, setFilter] = useState({
+    onlyShort: false,
+    search: '',
+  });
   React.useEffect(() => {
     clearAllErrors();
   }, []);
+
+  console.log('SavedMovies useMemo', movies);
+  const filteredMovies = React.useMemo(() => {
+    const sortedMovies = movies.filter((movie) => {
+      const isTitleMatched = movie.nameRU
+        .toLowerCase()
+        .includes(filter.search.toLowerCase());
+
+      if (filter.onlyShort) {
+        return isTitleMatched && movie.duration <= SHORT_FILM_DURATION;
+      }
+
+      return isTitleMatched;
+    });
+
+    return sortedMovies;
+  }, [filter, movies]);
+
   return (
     <div className="saved_movies">
-      <SearchForm updateFilter={updateFilter} filter={filter} />
+      <SearchForm updateFilter={setFilter} filter={filter} disableValidation />
       <span className="search-form__error">
-        {foundError ? 'Ничего не найдено' : ''}
+        {filteredMovies.length === 0 ? 'Ничего не найдено' : ''}
       </span>
       <MoviesCardList
-        movies={savedMovies}
+        movies={filteredMovies}
         windowWidth={windowWidth}
         handleDeleteMovie={handleDeleteMovie}
       />

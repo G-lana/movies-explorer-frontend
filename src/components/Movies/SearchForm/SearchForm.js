@@ -3,7 +3,7 @@ import React from 'react';
 
 function SearchForm({ filter, updateFilter, setRenderedMoviesList }) {
   const [onlyShort, setOnlyShort] = React.useState(filter.onlyShort);
-  const [search, setSearch] = React.useState(filter.search);
+  const [search, setSearch] = React.useState(filter.search || '');
   const [validForm, setValidForm] = React.useState(true);
 
   const checkBoxClassName = `checkbox__input checkbox__input_before ${
@@ -14,22 +14,26 @@ function SearchForm({ filter, updateFilter, setRenderedMoviesList }) {
     setSearch(evt.target.value);
   }
 
+  React.useEffect(() => {
+    setSearch(filter.search);
+    setOnlyShort(filter.onlyShort);
+  }, [filter]);
+
   function handleCheck() {
     setOnlyShort(!onlyShort);
     updateFilter({ ...filter, onlyShort: !onlyShort });
     setRenderedMoviesList([]);
-    localStorage.setItem('onlyShort', !onlyShort);
   }
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    localStorage.setItem('search', search);
+    setRenderedMoviesList([]);
     if (search.length === 0) {
       setValidForm(false);
     } else {
       setValidForm(true);
       updateFilter({
-        search: localStorage.getItem('search'),
+        search,
         onlyShort,
       });
     }
@@ -39,6 +43,7 @@ function SearchForm({ filter, updateFilter, setRenderedMoviesList }) {
     <section className="search-form">
       <form className="search-form__form" onSubmit={handleSubmit}>
         <input
+          value={search}
           className="search-form__input"
           placeholder="Фильм"
           onChange={handleSearchChange}

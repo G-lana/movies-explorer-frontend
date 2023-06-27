@@ -1,7 +1,7 @@
 import searchIcon from '../../../images/search_icon.svg';
 import React from 'react';
 
-function SearchForm({ filter, updateFilter }) {
+function SearchForm({ filter, updateFilter, disableValidation }) {
   const [onlyShort, setOnlyShort] = React.useState(filter.onlyShort);
   const [search, setSearch] = React.useState(filter.search);
   const [validForm, setValidForm] = React.useState(true);
@@ -21,7 +21,7 @@ function SearchForm({ filter, updateFilter }) {
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    if (search.length === 0) {
+    if (search.length === 0 && !disableValidation) {
       setValidForm(false);
     } else {
       setValidForm(true);

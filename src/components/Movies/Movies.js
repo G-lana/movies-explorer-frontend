@@ -10,36 +10,38 @@ import {
   MAX_CARDS_COUNT,
   MIDDLE_CARDS_COUNT,
   MIN_CARDS_COUNT,
+  SHORT_FILM_DURATION,
 } from '../../constants/constants';
 
 function Movies({
   movies,
-  updateFilter,
-  filter,
   windowWidth,
   handleSaveMovie,
   handleDeleteMovie,
-  foundError,
   clearAllErrors,
+  savedMoviesIds,
   serverError,
 }) {
   React.useEffect(() => {
     clearAllErrors();
+
+    const storedFilter = JSON.parse(localStorage.getItem('filter'));
+    setFilter((state) => storedFilter || state);
   }, []);
 
   const [renderedMoviesList, setRenderedMoviesList] = React.useState([]);
   const [isButtonActive, setIsButtonActive] = React.useState(false);
   const [renderedCardsCount, setRenderedCardsCount] = React.useState(12);
   const [addedCardsCount, setAddedCardsCount] = React.useState(0);
+  const [filter, setFilter] = React.useState({
+    onlyShort: false,
+    search: '',
+  });
 
-  function handleMoreClick() {
-    setRenderedMoviesList(
-      movies.slice(0, renderedMoviesList.length + addedCardsCount)
-    );
-    if (renderedMoviesList.length >= movies.length - addedCardsCount) {
-      setIsButtonActive(false);
-    }
-  }
+  const updateFilter = (newFilter) => {
+    setFilter(newFilter);
+    localStorage.setItem('filter', JSON.stringify(newFilter));
+  };
 
   React.useEffect(() => {
     if (windowWidth > MAX_WINDOW_WIDTH) {
@@ -57,12 +59,43 @@ function Movies({
     }
   }, [windowWidth]);
 
+  //--------------------------------------------------------------------Фильтрация фильмов-------------------------------------------------------------//
+
+  const filteredMovies = React.useMemo(() => {
+    const sortedMovies = movies.filter((movie) => {
+      const isTitleMatched = movie.nameRU
+        .toLowerCase()
+        .includes(filter.search.toLowerCase());
+
+      if (filter.onlyShort) {
+        return isTitleMatched && movie.duration <= SHORT_FILM_DURATION;
+      }
+
+      return isTitleMatched;
+    });
+
+    return sortedMovies.map((item) => ({
+      ...item,
+      saved: savedMoviesIds.some((id) => id === item.id),
+    }));
+  }, [filter, movies, savedMoviesIds]);
+
   React.useEffect(() => {
     const moviesCount = renderedMoviesList.length || renderedCardsCount;
-    setRenderedMoviesList(movies.slice(0, moviesCount));
+    setRenderedMoviesList(filteredMovies.slice(0, moviesCount));
 
-    setIsButtonActive(movies.length > moviesCount);
-  }, [movies, renderedCardsCount, renderedMoviesList.length]);
+    setIsButtonActive(filteredMovies.length > moviesCount);
+  }, [filteredMovies, renderedCardsCount, renderedMoviesList.length]);
+
+  function handleMoreClick() {
+    setRenderedMoviesList(
+      filteredMovies.slice(0, renderedMoviesList.length + addedCardsCount)
+    );
+    if (renderedMoviesList.length >= filteredMovies.length - addedCardsCount) {
+      setIsButtonActive(false);
+    }
+  }
+
   return (
     <div className="movies">
       <SearchForm
@@ -71,7 +104,7 @@ function Movies({
         setRenderedMoviesList={setRenderedMoviesList}
       />
       <span className="search-form__error">
-        {foundError ? 'Ничего не найдено' : ''}
+        {filteredMovies.length === 0 ? 'Ничего не найдено' : ''}
       </span>
       <span className="server__error">
         {serverError
@@ -84,7 +117,7 @@ function Movies({
           windowWidth={windowWidth}
           handleSaveMovie={handleSaveMovie}
           handleDeleteMovie={handleDeleteMovie}
-          foundError={foundError}
+          foundError={filteredMovies.length === 0}
           isButtonActive={isButtonActive}
           handleMoreClick={handleMoreClick}
         />
