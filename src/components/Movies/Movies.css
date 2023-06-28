@@ -2,3 +2,11 @@
     margin: auto;
     max-width: 1280px;
 }
+
+.search-form__error {
+    color: #FF4062;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+}

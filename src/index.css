@@ -42,6 +42,7 @@ code {
 @import url(./components/Profile/Profile.css);
 
 @import url(./components/Navigation/Navigation.css);
+@import url(./components/Profile/Success/Success.css);
 
 @import url(./components/Error/Error.css);
 

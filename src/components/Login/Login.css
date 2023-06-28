@@ -26,7 +26,7 @@
     height: 32px;
     font-size: 14px;
     color: black;
-    margin: 0 0 24px;
+    margin: 0;
     font-weight: 400;
 }
 
@@ -34,11 +34,18 @@
     border-bottom: 1px solid black;
 }
 
+.login__form {
+    display: flex;
+    flex-direction: column;
+    width: 396px;
+}
+
 .login__form_text {
     font-size: 10px;
     font-weight: 400;
     margin: 0;
     color: #A0A0A0;
+    margin-top: 24px;
 }
 
 .login__button {
@@ -47,12 +54,22 @@
     background-color: black;
     color: white;
     font-size: 14px;
-    margin-top: 134px;
+    margin-top: 6px;
     cursor: pointer;
     border: none;
     outline: none;
     transition: .6s;
     border-radius: 3px;
+}
+
+.login__button:disabled {
+    background-color: #d0d0d0;
+    cursor:default;
+    color: #595959;
+}
+
+.login__button:disabled:hover {
+    opacity: 1;
 }
 
 .login__button:hover {
@@ -61,6 +78,13 @@
 
 .login__button:focus {
     opacity: 1;
+}
+
+.login__button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 134px;
 }
 
 .login__signup {
@@ -97,9 +121,22 @@
     opacity: 1;
 }
 
+.login__error {
+    color: #FF4062;
+    font-size: 11px;
+    max-width: 396px;
+    margin-top: 6px;
+}
+
 @media screen and (max-width: 568px) {
     .login__logo {
         margin: auto;
+    }
+} 
+
+@media screen and (max-width: 568px) {
+    .login__error {
+        width: 260px;
     }
 } 
 

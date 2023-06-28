@@ -1,19 +1,38 @@
 import logo from '../../images/logo.svg';
 import profile from '../../images/profile.svg';
+import whiteProfile from '../../images/white-profile.svg';
 import { Link, useLocation } from 'react-router-dom';
 import menu from '../../images/menu.svg';
+import React from 'react';
 
-function Header({ openPopup }) {
+function Header({ openPopup, loggedIn }) {
   const location = useLocation();
-  const headerMovies =
-    location.pathname === '/movies' ||
-    location.pathname === '/saved-movies' ||
-    location.pathname === '/profile';
+  // const [onlyShort, setOnlyShort] = React.useState(filter.onlyShort);
+  const moviesLocation = location.pathname === '/movies';
+  const savedMoviesLocation = location.pathname === '/saved-movies';
+  const purpleHeader = location.pathname === '/';
+  const headerClassName = `header__container ${
+    purpleHeader ? 'header__container_violet' : ''
+  }`;
+  const headerMainClassName = `header__color ${
+    purpleHeader ? 'header__color_violet' : ''
+  }`;
+  const buttonClassName = `menu-button ${
+    purpleHeader ? 'menu-button_black' : ''
+  }`;
+  const menuItemMoviesClassName = `header__menu_item ${
+    moviesLocation ? 'header__menu_item_bold' : ''
+  }`;
+  const menuItemSavedMoviesClassName = `header__menu_item ${
+    savedMoviesLocation ? 'header__menu_item_bold' : ''
+  }`;
+  const imgSrc = purpleHeader ? whiteProfile : profile;
+
   return (
     <header className="header">
-      {location.pathname === '/' && (
-        <div className="header__violet">
-          <div className="header__container header__container_violet">
+      {!loggedIn && (
+        <div className={headerMainClassName}>
+          <div className={headerClassName}>
             <Link to="/" className="header__logo">
               <input type="image" src={logo} alt="logo" />
             </Link>
@@ -34,41 +53,41 @@ function Header({ openPopup }) {
           </div>
         </div>
       )}
-      {headerMovies && (
-        <div className="header__container header__container_white">
-          <Link to="/" className="header__logo">
-            <input type="image" src={logo} alt="logo" />
-          </Link>
-          <input
-            type="image"
-            src={menu}
-            className="burger"
-            alt="menu"
-            onClick={openPopup}
-          />
-          <ul className="header__menu">
-            <Link
-              to="/movies"
-              className="header__menu_item header__menu_item_type_films"
-            >
-              Фильмы
+      {loggedIn && (
+        <div className={headerMainClassName}>
+          <div className={headerClassName}>
+            <Link to="/" className="header__logo">
+              <input type="image" src={logo} alt="logo" />
             </Link>
-            <Link
-              to="/saved-movies"
-              className="header__menu_item header__menu_item_type_saved-films"
-            >
-              Сохраненные фильмы
-            </Link>
-            <Link
-              to="/profile"
-              className="header__menu_item header__menu_item_type_profile"
-            >
-              <button className="menu-button">
-                <img src={profile} className="menu-button__img" alt="profile" />{' '}
-                Аккаунт
-              </button>
-            </Link>
-          </ul>
+            <input
+              type="image"
+              src={menu}
+              className="burger"
+              alt="menu"
+              onClick={openPopup}
+            />
+            <ul className="header__menu">
+              <Link to="/movies" className={menuItemMoviesClassName}>
+                Фильмы
+              </Link>
+              <Link to="/saved-movies" className={menuItemSavedMoviesClassName}>
+                Сохраненные фильмы
+              </Link>
+              <Link
+                to="/profile"
+                className="header__menu_item header__menu_item_type_profile"
+              >
+                <button className={buttonClassName}>
+                  <img
+                    src={imgSrc}
+                    className="menu-button__img"
+                    alt="profile"
+                  />{' '}
+                  Аккаунт
+                </button>
+              </Link>
+            </ul>
+          </div>
         </div>
       )}
     </header>

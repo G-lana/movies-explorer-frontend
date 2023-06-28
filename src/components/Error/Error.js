@@ -1,13 +1,15 @@
 import { Link } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
 function Error() {
+  const navigate = useNavigate();
+
   return (
-    <section class="error">
-      <h1 class="error__status">404</h1>
-      <p class="error__name">Страница не найдена</p>
-      <Link to="/" class="error__link">
+    <section className="error">
+      <h1 className="error__status">404</h1>
+      <p className="error__name">Страница не найдена</p>
+      <button className="error__link" onClick={() => navigate(-1)}>
         Назад
-      </Link>
+      </button>
     </section>
   );
 }

@@ -24,6 +24,11 @@
 
 .profile__info_text {
     margin: 16px 0 16px;
+    border: none;
+    outline: none;
+    text-align: right;
+    width: max-content;
+    background-color: white;
 }
 
 .profile__info_meaning {
@@ -42,6 +47,11 @@
     color: black;
     font-size: 13px;
     transition: .6s;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+
 }
 .profile_link:hover{
     opacity: .6;
@@ -53,8 +63,61 @@
     margin-bottom: 70px;
 }
 
+.profile__button-save {
+    width: 410px;
+    border-radius: 3px;
+    background-color: black;
+    cursor: pointer;
+    height: 45px;
+    position: relative;
+    color: white;
+    transition: .6s;
+    border: none;
+    outline: none;
+}
+
+.profile__button-save:disabled {
+    background-color: #d0d0d0;
+    cursor:default;
+    color: #595959;
+}
+
+.profile__button-save:disabled:hover {
+    opacity: 1;
+}
+
+.profile__button-save:hover {
+    opacity: .6;
+}
+
+.profile__error {
+    font-size: 11px;
+    color: #FF4062;
+    margin: 0;
+    padding-bottom: 20px;
+    padding-top: 6px;
+    width: 394px;
+    display: block;
+}
+
+.save-button__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile__error_submit {
+    text-align: center;
+}
+
 @media screen and (max-width: 568px) {
     .profile__info{
+        width: 260px;
+    }
+}
+
+@media screen and (max-width: 568px) {
+    .profile__error {
         width: 260px;
     }
 }

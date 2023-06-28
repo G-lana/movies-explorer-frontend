@@ -1,26 +1,144 @@
-function Profile() {
+import React from 'react';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import { mainApi } from '../../utils/MainApi';
+import { useFormWithValidation } from '../../utils/Validator';
+import Success from './Success/Success';
+
+function Profile({ onSignOut, updateCurrentUser }) {
+  const EMAIL_REGEXP =
+    '^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@' +
+    '[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$';
+  const { values, handleChange, errors, isValid, resetForm, setValues } =
+    useFormWithValidation();
+  const [isEdit, setIsEdit] = React.useState(false);
+  const [error, setError] = React.useState('');
+  const [isSuccess, setIsSuccess] = React.useState(false);
+  const currentUser = React.useContext(CurrentUserContext);
+
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+    if (isEdit) {
+      mainApi
+        .editProfile({ name: values.name, email: values.email })
+        .then((res) => {
+          const name = res.data.name;
+          const email = res.data.email;
+          updateCurrentUser({ ...currentUser, name, email });
+          setIsEdit(false);
+        })
+        .catch((err) => {
+          err === 'Ошибка: 409'
+            ? setError('Пользователь с таким email уже существует.')
+            : setError('При обновлении профиля произошла ошибка.');
+        })
+        .finally(() => {
+          setIsSuccess(true);
+          setTimeout(() => {
+            setIsSuccess(false);
+          }, 1000);
+        });
+    } else {
+      setIsEdit(true);
+    }
+  };
+
+  function handleClickSignOut() {
+    resetForm();
+    onSignOut();
+  }
+  function handleChangeInput(e) {
+    handleChange(e);
+    if (error.length > 0) {
+      setError('');
+    }
+  }
+  React.useEffect(() => {
+    setValues(currentUser);
+  }, [currentUser, setValues]);
+
   return (
-    <section className="profile">
-      <h1 className="profile__greeting">Привет, Виталий!</h1>
-      <div className="profile__info">
-        <p className="profile__info_text profile__info_meaning">Имя</p>
-        <p className="profile__info_text profile__info_value">Виталий</p>
-      </div>
-      <div className="profile__info">
-        <p className="profile__info_text profile__info_meaning">Email</p>
-        <p className="profile__info_text profile__info_value">
-          pochta@yandex.ru
-        </p>
-      </div>
-      <div className="profile__links">
-        <a className="profile_link profile__link_type_edit" href="#">
-          Редактировать
-        </a>
-        <a className="profile_link profile__link_type_signout" href="#">
-          Выйти из аккаунта
-        </a>
-      </div>
-    </section>
+    <>
+      <section className="profile">
+        <h1 className="profile__greeting">Привет, {currentUser.name}!</h1>
+        <form className="profile-info__form" onSubmit={handleSubmit}>
+          <div className="profile__info">
+            <span className="profile__info_text profile__info_meaning">
+              Имя
+            </span>
+            <input
+              className="profile__info_text profile__info_value"
+              id="name-input"
+              type="text"
+              name="name"
+              required
+              minLength="2"
+              maxLength="40"
+              value={values.name || ''}
+              pattern="[а-яА-Яa-zA-ZёË\- ]{1,}"
+              disabled={!isEdit}
+              onChange={handleChangeInput}
+            />
+          </div>
+          <span className="profile__error">{errors.name}</span>
+          <div className="profile__info">
+            <span className="profile__info_text profile__info_meaning">
+              E-mail
+            </span>
+            <input
+              className="profile__info_text profile__info_value"
+              id="email-input"
+              type="email"
+              name="email"
+              pattern={EMAIL_REGEXP}
+              required
+              minLength="2"
+              maxLength="40"
+              value={values.email || ''}
+              disabled={!isEdit}
+              onChange={handleChangeInput}
+            />
+          </div>
+          <span className="profile__error">{errors.email}</span>
+          <div className="profile__links">
+            {!isEdit ? (
+              <>
+                <button
+                  className="profile_link profile__link_type_edit"
+                  onSubmit={handleSubmit}
+                  type="submit"
+                >
+                  Редактировать
+                </button>
+                <button
+                  className="profile_link profile__link_type_signout"
+                  onClick={handleClickSignOut}
+                  type="button"
+                >
+                  Выйти из аккаунта
+                </button>{' '}
+              </>
+            ) : (
+              <div className="save-button__container">
+                <p className="profile__error profile__error_submit">{error}</p>
+                <button
+                  className="profile__button-save"
+                  type="submit"
+                  onSubmit={handleSubmit}
+                  disabled={
+                    !isValid ||
+                    (currentUser.name === values.name &&
+                      currentUser.email === values.email)
+                  }
+                >
+                  Сохранить
+                </button>
+              </div>
+            )}
+          </div>
+        </form>
+      </section>
+      <Success isSuccess={isSuccess} />
+    </>
   );
 }
 

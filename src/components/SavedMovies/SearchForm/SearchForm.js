@@ -1,9 +1,9 @@
 import searchIcon from '../../../images/search_icon.svg';
 import React from 'react';
 
-function SearchForm({ filter, updateFilter, setRenderedMoviesList }) {
+function SearchForm({ filter, updateFilter, disableValidation }) {
   const [onlyShort, setOnlyShort] = React.useState(filter.onlyShort);
-  const [search, setSearch] = React.useState(filter.search || '');
+  const [search, setSearch] = React.useState(filter.search);
   const [validForm, setValidForm] = React.useState(true);
 
   const checkBoxClassName = `checkbox__input checkbox__input_before ${
@@ -14,21 +14,14 @@ function SearchForm({ filter, updateFilter, setRenderedMoviesList }) {
     setSearch(evt.target.value);
   }
 
-  React.useEffect(() => {
-    setSearch(filter.search);
-    setOnlyShort(filter.onlyShort);
-  }, [filter]);
-
   function handleCheck() {
     setOnlyShort(!onlyShort);
     updateFilter({ ...filter, onlyShort: !onlyShort });
-    setRenderedMoviesList([]);
   }
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    setRenderedMoviesList([]);
-    if (search.length === 0) {
+    if (search.length === 0 && !disableValidation) {
       setValidForm(false);
     } else {
       setValidForm(true);
@@ -43,7 +36,6 @@ function SearchForm({ filter, updateFilter, setRenderedMoviesList }) {
     <section className="search-form">
       <form className="search-form__form" onSubmit={handleSubmit}>
         <input
-          value={search}
           className="search-form__input"
           placeholder="Фильм"
           onChange={handleSearchChange}

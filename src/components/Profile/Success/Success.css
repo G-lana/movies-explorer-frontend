@@ -1,0 +1,45 @@
+.success {
+    background-color: rgba(0, 0, 0, 0.3);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    transition: visibility 0.4s, opacity 0.4s ease-in;
+    visibility: hidden;
+    opacity: 0;
+    display: flex;
+    z-index: 1;
+  }
+  
+  .success_open {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  .success__container {
+    background-color: white;
+    width: 410px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+  }
+
+  .success__image {
+    width: 130px;
+    height: 130px;
+    margin-bottom: 40px;
+    margin-top: 30px;
+  }
+
+  .success__text {
+    font-size: 15px;
+    font-weight: 400;
+    color: rgb(47, 172, 145);
+    text-align: center;
+  }
